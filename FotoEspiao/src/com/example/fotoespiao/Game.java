@@ -3,7 +3,6 @@ package com.example.fotoespiao;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import android.R.color;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,11 +22,14 @@ public class Game extends View implements Runnable {
 	private Rect[] setas = new Rect[4];
 	private Queue<MotionEvent> fila;
 	private boolean andando;
+	private Rect rectObstaculo1; // fazer array
+	private Rect rectObstaculo2;
+	private Rect rectObstaculo3;
+	
 
 
 	public Game(Context context) {
 		super(context);
-		move = new Movimentacao(30,50);
 		rectPlayer = new Rect();
 		rectPlayer.set(0, 0, 30, 50);
 		fila = new LinkedList<MotionEvent>();
@@ -42,10 +44,19 @@ public class Game extends View implements Runnable {
 		Thread processo = new Thread(this);
 		processo.start();
 		initializeTeclas();
+		
+		
 	}
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		setTeclas(getWidth(), getHeight());
+		
+		
+		rectObstaculo1 = Obstaculos.createObstaculo(getWidth()/6, 2 * getHeight()/16 , 5 *getWidth()/6, 3 *getHeight()/16);
+		rectObstaculo2 = Obstaculos.createObstaculo(getWidth()/10, 3 * getHeight()/4 ,  getWidth()/10+( 3 *getHeight()/16-2 * getHeight()/16 ),getHeight());
+		rectObstaculo3 = Obstaculos.createObstaculo(9*getWidth()/10-( 3 *getHeight()/16-2 * getHeight()/16 ), 3 * getHeight()/4 , 9 *getWidth()/10, getHeight());
+		move = new Movimentacao(getWidth(),getHeight());
+		
 	}
 	public void initializeTeclas(){
 		for(int i =0;i<setas.length;i++){
@@ -133,7 +144,8 @@ public class Game extends View implements Runnable {
 		super.draw(canvas);
 
 		
-		canvas.drawRect(rectPlayer, paint);
+		canvas.drawRect(rectObstaculo3, paint);
+		
 	}
 
 }
